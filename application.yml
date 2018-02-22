@@ -1,0 +1,36 @@
+# application.yml
+
+application:
+    name: kursverteilung
+    description: Optimale Verteilung von Kursen
+    version: 0.1.0  
+    userPassword: password
+    adminPassword: password          
+
+server:
+    port: 7999
+management:
+    port: 7998
+
+endpoints:
+    sensitive: false
+    enabled: true
+    health:
+        sensitive: false
+management.security.enabled: false 
+    
+spring:
+    data:
+        mongodb:
+            host: 127.0.0.1
+            port: 27017
+            database: kursverteilung
+    
+---    
+spring:
+    profiles: test
+    data:
+        mongodb:
+            host: 127.0.0.1
+            port: 27017
+            database: kursverteilung_test    
