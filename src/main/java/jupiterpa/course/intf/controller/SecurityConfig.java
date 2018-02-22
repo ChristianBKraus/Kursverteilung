@@ -17,7 +17,7 @@ public class SecurityConfig extends BaseSecurityConfig {
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.GET,  Controller.PATH+"/**" ).hasAnyRole("USER","ADMIN")
 			.antMatchers(HttpMethod.PUT,  Controller.PATH+"/**" ).hasRole("ADMIN")
-			.antMatchers(HttpMethod.POST, Controller.PATH+"/**" ).hasRole("ADMIN")
+//			.antMatchers(HttpMethod.POST, Controller.PATH+"/**" ).hasRole("ADMIN")
 			.anyRequest().permitAll();
 	}
 }

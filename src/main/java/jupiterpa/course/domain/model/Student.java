@@ -25,7 +25,7 @@ public class Student {
 		
 	@Override
 	public String toString() {
-		return "Student " + id + ":" + name; 
+		return "Student " + id + ":" + name +" (" + course1 + "/" + course2 + "/" + course3 + ")"; 
 	}
 	public int getId() {
 		return id;

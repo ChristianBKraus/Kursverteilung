@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Kusrverteilung">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kursverteilung</title>
+
+<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="assets/css/glyphicons.css">
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/angular.js"></script>
+<script src="script.js"></script>
+</head>
+<body>
+	<div id="wrapper" ng-controller="Ctrl">
+	
+		<h1>Kursverteilung</h1>
+		
+		<div>
+			<form method="POST" enctype="multipart/form-data" action="/api/upload/students">
+				<table>
+					<tr> <td> File to upload: </td> <td> <input type="file" name="file"/> </td> </tr>
+					<tr> <td> </td> <td> <input type="submit" value="Upload" /> </td> </tr>
+				</table>
+			</form>
+		</div>
+
+
+	</div>
+</body>
+</html>

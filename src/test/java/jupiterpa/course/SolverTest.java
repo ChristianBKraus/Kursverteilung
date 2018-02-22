@@ -225,36 +225,36 @@ public class SolverTest {
 	                true).getPoint();
 
     }
-	@Test
-    public void performance150_40() throws Exception {
-		List<Student> students = new ArrayList<Student>();
-		List<Course> courses = new ArrayList<Course>();
-		List<SameCourse> sameCourses = new ArrayList<SameCourse>();
-		List<FixCourse> fixedCourses = new ArrayList<FixCourse>();
-		
-		for (int i = 0; i < 40; i++) {
-			String c = "C" + i; 
-			courses.add(new Course(0,c,8));
-		}
-		
-		for (int i = 0; i < 150; i++) {
-			String s = "S" + i;
-			String c1 = "C" + (int) Math.floor( Math.random() * 40.0 );
-			String c2 = "C" + (int) Math.floor( Math.random() * 40.0 );
-			String c3 = "C" + (int) Math.floor( Math.random() * 40.0 );
-			System.out.println(s + "/" + c1 + "/" + c2 + "/" + c3);
-			students.add(new Student(i, s, c1, c2, c3));
-		}
-		
-		Model model = new Model(students,courses, fixedCourses, sameCourses);			
-	    SimplexSolver solver = new SimplexSolver();
-	    solver.setMaxIterations(10000);
-	    double[] solution = 
-	    		solver.optimize(
-	        		model.getObjectiveFunction(), 
-	        		model.getConstraints(),
-	                GoalType.MAXIMIZE, 
-	                true).getPoint();
-
-    }
+//	@Test
+//    public void performance150_40() throws Exception {
+//		List<Student> students = new ArrayList<Student>();
+//		List<Course> courses = new ArrayList<Course>();
+//		List<SameCourse> sameCourses = new ArrayList<SameCourse>();
+//		List<FixCourse> fixedCourses = new ArrayList<FixCourse>();
+//		
+//		for (int i = 0; i < 40; i++) {
+//			String c = "C" + i; 
+//			courses.add(new Course(0,c,8));
+//		}
+//		
+//		for (int i = 0; i < 150; i++) {
+//			String s = "S" + i;
+//			String c1 = "C" + (int) Math.floor( Math.random() * 40.0 );
+//			String c2 = "C" + (int) Math.floor( Math.random() * 40.0 );
+//			String c3 = "C" + (int) Math.floor( Math.random() * 40.0 );
+//			System.out.println(s + "/" + c1 + "/" + c2 + "/" + c3);
+//			students.add(new Student(i, s, c1, c2, c3));
+//		}
+//		
+//		Model model = new Model(students,courses, fixedCourses, sameCourses);			
+//	    SimplexSolver solver = new SimplexSolver();
+//	    solver.setMaxIterations(10000);
+//	    double[] solution = 
+//	    		solver.optimize(
+//	        		model.getObjectiveFunction(), 
+//	        		model.getConstraints(),
+//	                GoalType.MAXIMIZE, 
+//	                true).getPoint();
+//
+//    }
 }
