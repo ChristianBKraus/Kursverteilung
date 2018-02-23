@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
 
+import jupiterpa.course.domain.service.FormatException;
+
 @Document
 public class SameCourse {
 	
@@ -19,7 +21,8 @@ public class SameCourse {
 		this.student1 = student1;
 		this.student2 = student2;
 	}
-	public static SameCourse read(List<String> args) {
+	public static SameCourse read(List<String> args) throws FormatException {
+		if (args.size() < 2) throw new FormatException();
 		return new SameCourse(args.get(0), args.get(1));
 	}
 

@@ -2,6 +2,8 @@ package jupiterpa.course;
 
 import org.junit.Test;
 import jupiterpa.course.domain.model.*;
+import jupiterpa.course.domain.service.FormatException;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -16,7 +18,7 @@ import org.apache.commons.math3.optimization.linear.SimplexSolver;
 
 public class SolverTest { 
 	@Test
-    public void simpleTest() throws Exception {
+    public void simpleTest() throws Exception, FormatException {
 		List<Student> students = new ArrayList<Student>();
 		List<Course> courses = new ArrayList<Course>();
 		List<SameCourse> sameCourses = new ArrayList<SameCourse>();
@@ -57,7 +59,7 @@ public class SolverTest {
 		
     }
 	@Test
-    public void simpleTest2() throws Exception {
+    public void simpleTest2() throws Exception, FormatException {
 		List<Student> students = new ArrayList<Student>();
 		List<Course> courses = new ArrayList<Course>();
 		List<SameCourse> sameCourses = new ArrayList<SameCourse>();
@@ -92,7 +94,7 @@ public class SolverTest {
 		
     }
 	@Test(expected=NoFeasibleSolutionException.class)
-    public void invalid() throws Exception {
+    public void invalid() throws Exception, FormatException {
 		List<Student> students = new ArrayList<Student>();
 		List<Course> courses = new ArrayList<Course>();
 		List<SameCourse> sameCourses = new ArrayList<SameCourse>();
@@ -121,7 +123,7 @@ public class SolverTest {
 	    assertThat( 1, is(0) );
     }
 	@Test
-    public void fixCourse() throws Exception {
+    public void fixCourse() throws Exception, FormatException {
 		List<Student> students = new ArrayList<Student>();
 		List<Course> courses = new ArrayList<Course>();
 		List<SameCourse> sameCourses = new ArrayList<SameCourse>();
@@ -154,7 +156,7 @@ public class SolverTest {
 		assertThat( result.get("S3"), is("C3"));
     }
 	@Test
-    public void sameCourse() throws Exception {
+    public void sameCourse() throws Exception, FormatException {
 		List<Student> students = new ArrayList<Student>();
 		List<Course> courses = new ArrayList<Course>();
 		List<SameCourse> sameCourses = new ArrayList<SameCourse>();
@@ -188,7 +190,7 @@ public class SolverTest {
 		assertThat( result.get("S3"), is("C3"));
     }
 	@Test
-    public void performance10_10() throws Exception {
+    public void performance10_10() throws Exception, FormatException {
 		List<Student> students = new ArrayList<Student>();
 		List<Course> courses = new ArrayList<Course>();
 		List<SameCourse> sameCourses = new ArrayList<SameCourse>();

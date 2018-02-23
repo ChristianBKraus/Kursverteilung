@@ -4,7 +4,9 @@ import org.apache.commons.math3.optimization.GoalType;
 import org.apache.commons.math3.optimization.linear.SimplexSolver;
 import org.junit.Test;
 import jupiterpa.course.domain.model.*;
-import jupiterpa.course.domain.service.ReadService;
+import jupiterpa.course.domain.service.ReadUtility;
+import jupiterpa.course.domain.service.FormatException;
+import jupiterpa.course.domain.service.OptimizationService;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,9 +29,9 @@ public class InternalTest {
 		MultipartFile multipart = new MockMultipartFile(filename,filename,"text/plain",file);
 		return multipart;
 	}
-	
+		
 	@Test
-    public void simpleTest() throws Exception {
+    public void File2Solution() throws Exception, FormatException {
 		// Mock File
 		MultipartFile student_file = getMultipartFile("student.csv");
 		MultipartFile course_file = getMultipartFile("course.csv");
@@ -37,40 +39,35 @@ public class InternalTest {
 		MultipartFile sameCourse_file = getMultipartFile("sameCourse.csv");
 		
 		// Convert to Entities
-		ReadService<Student> studentService = new ReadService<Student>();
+		ReadUtility<Student> studentService = new ReadUtility<Student>();
 		Collection<Student> students = studentService.read(student_file, args -> Student.read(args));
 		
-		ReadService<Course> courseService = new ReadService<Course>();
+		ReadUtility<Course> courseService = new ReadUtility<Course>();
 		Collection<Course> courses = courseService.read(course_file, args -> Course.read(args));
 		
-		ReadService<FixCourse> fixedService = new ReadService<FixCourse>();
+		ReadUtility<FixCourse> fixedService = new ReadUtility<FixCourse>();
 		Collection<FixCourse> fixedCourses = fixedService.read(fixedCourse_file, args -> FixCourse.read(args));
 		
-		ReadService<SameCourse> sameCourseService = new ReadService<SameCourse>();
+		ReadUtility<SameCourse> sameCourseService = new ReadUtility<SameCourse>();
 		Collection<SameCourse> sameCourses = sameCourseService.read(sameCourse_file, args -> SameCourse.read(args));
 		
 		// Ignore save and query from DB
 		
-		// Build Model
-		Model model = new Model(students, courses, fixedCourses, sameCourses);			
-		
 		// Solve
-	    SimplexSolver solver = new SimplexSolver();
-	    double[] solution = 
-	    		solver.optimize(
-	        		model.getObjectiveFunction(), 
-	        		model.getConstraints(),
-	                GoalType.MAXIMIZE, 
-	                true).getPoint();
-	   
-	    // Convert
-		Map<String,String> result = model.convert2String(solution);
+		Collection<Student> result = 
+				OptimizationService.optimize(students, courses, fixedCourses, sameCourses);
 		
-		// Check
+		// Ignore save to DB
+
+	    // Check
 		assertThat( result.size(), is(3) );
-		assertThat( result.get("S1"), is("C1"));
-		assertThat( result.get("S2"), is("C1"));
-		assertThat( result.get("S3"), is("C3"));
+		for (Student student : result ) {
+			switch (student.getName()) {
+				case "S1": assertThat( student.getCourse(), is("C1")); break;
+				case "S2": assertThat( student.getCourse(), is("C1")); break;
+				case "S3": assertThat( student.getCourse(), is("C3")); break;
+			}
+		}
 
 	}
 }

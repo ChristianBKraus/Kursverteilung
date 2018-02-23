@@ -1,9 +1,12 @@
 package jupiterpa.course.domain.model;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
+
+import jupiterpa.course.domain.service.FormatException;
 
 @Document
 public class Course {
@@ -19,7 +22,8 @@ public class Course {
 		this.name = name;
 		this.capacity = capacity;
 	}
-	public static Course read(List<String> args) {
+	public static Course read(List<String> args) throws FormatException {
+		if (args.size() < 3) throw new FormatException();
 		return new Course(Integer.parseInt(args.get(2)), args.get(0), Integer.parseInt(args.get(1)));
 	}
 		

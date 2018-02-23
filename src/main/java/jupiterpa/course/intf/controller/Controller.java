@@ -3,7 +3,9 @@ package jupiterpa.course.intf.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.math3.exception.MathIllegalStateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +27,7 @@ public class Controller {
     @Autowired FixCourseRepo fixedCourseRepo;
     @Autowired SameCourseRepo sameCourseRepo;
     
-    @Autowired Solver solver;
+    @Autowired OptimizationService solver;
     @Autowired UploadService upload;
     
     @GetMapping("/course")
@@ -68,13 +70,13 @@ public class Controller {
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully calculated")
     })
-    public void optimize() {  
-    	solver.optimize();
+    public void optimize() throws MathIllegalStateException, FormatException {  
+    	solver.run();
     }
     
     @PostMapping("/upload/students")
     public ModelAndView uploadStudent(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+            RedirectAttributes redirectAttributes) throws IOException, FormatException {
 
 		upload.uploadStudent(file);
         redirectAttributes.addFlashAttribute("message",
@@ -84,7 +86,7 @@ public class Controller {
     }
     @PostMapping("/upload/courses")
     public ModelAndView uploadCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+            RedirectAttributes redirectAttributes) throws IOException, FormatException {
 
         upload.uploadCourse(file);
         redirectAttributes.addFlashAttribute("message",
@@ -94,7 +96,7 @@ public class Controller {
     }
     @PostMapping("/upload/fixcourse")
     public ModelAndView uploadFixCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+            RedirectAttributes redirectAttributes) throws IOException, FormatException {
 
 		upload.uploadFixCourse(file);
         redirectAttributes.addFlashAttribute("message",
@@ -104,7 +106,7 @@ public class Controller {
     }
     @PostMapping("/upload/samecourse")
     public ModelAndView uploadSameCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+            RedirectAttributes redirectAttributes) throws IOException, FormatException {
 
         upload.uploadSameCourse(file);
         redirectAttributes.addFlashAttribute("message",
@@ -112,4 +114,19 @@ public class Controller {
 
         return new ModelAndView("redirect:/");
     }
+    
+    
+    @ResponseStatus(value=HttpStatus.CONFLICT, reason="Formatierungsfehler")
+    @ExceptionHandler(FormatException.class) 
+    public void handleFormatException(){
+    	// Errors !!!!!!
+    }
+
+    @ResponseStatus(value=HttpStatus.CONFLICT, reason="Formatierungsfehler")
+    @ExceptionHandler(IOException.class) 
+    public void handleIOException(){}
+
+    @ResponseStatus(value=HttpStatus.CONFLICT, reason="Problem nicht lösbar")
+    @ExceptionHandler(MathIllegalStateException.class) 
+    public void handleMathIllegalStateException(){}
 }

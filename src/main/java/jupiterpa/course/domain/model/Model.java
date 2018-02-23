@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.math3.optimization.linear.*;
 
+import jupiterpa.course.domain.service.FormatException;
+
 public class Model {
 	Collection<String> errors;
 	
@@ -23,7 +25,7 @@ public class Model {
 	final Map<String,Course> courseMap = new HashMap<String,Course>();
 	
 	public Model(Collection<Student> students, Collection<Course> courses,
-			     Collection<FixCourse> fixedCourses, Collection<SameCourse> sameCourses) {
+			     Collection<FixCourse> fixedCourses, Collection<SameCourse> sameCourses) throws FormatException {
 		this.students = students;
 		this.courses = courses;
 		this.fixedCourses = fixedCourses;
@@ -58,7 +60,8 @@ public class Model {
 		}
 		
 		objectiveFunction = new LinearObjectiveFunction( objective( students, courses) ,0);
-		}
+		} else 
+			throw new FormatException(errors);
 	}
 	
 	public Map<String,String> convert2String(double[] solution) { 
