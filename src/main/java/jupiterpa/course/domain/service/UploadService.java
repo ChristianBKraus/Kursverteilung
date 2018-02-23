@@ -7,6 +7,10 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,29 +29,28 @@ public class UploadService {
 	@Autowired SameCourseRepo sameCourseRepo;
 	
 	@Autowired InterfaceHealth health;
-
+	
+    private static final Marker CONTENT = MarkerFactory.getMarker("CONTENT");
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());	
+	
 	public void uploadStudent(MultipartFile file) throws IOException {
-		
-		InputStream stream = file.getInputStream();
-		Reader reader = new InputStreamReader(stream);
-		CSVReader csvReader = new CSVReader(reader, ';');
-		
-		Collection<Student> students = new ArrayList<Student>();
-		String[] nextRecord;
-		int i = 0;
-		csvReader.readNext(); // Header line
-		while ((nextRecord = csvReader.readNext()) != null) {
-			Student student = new Student(i,nextRecord[0],nextRecord[1],nextRecord[2],nextRecord[3]);
-			System.out.println(student);
-			students.add(student);
-			i++;
-		}
-		csvReader.close();
+		ReadService<Student> service = new ReadService<Student>();
+		Collection<Student> list = service.read(file, args -> Student.read(args));
+		studentRepo.save(list);
 	}
-	public void uploadCourse(MultipartFile file) {
+	public void uploadCourse(MultipartFile file) throws IOException {
+		ReadService<Course> service = new ReadService<Course>();
+		Collection<Course> list = service.read(file, args -> Course.read(args));
+		courseRepo.save(list);
 	}
-	public void uploadFixCourse(MultipartFile file) {
+	public void uploadFixCourse(MultipartFile file) throws IOException {
+		ReadService<FixCourse> service = new ReadService<FixCourse>();
+		Collection<FixCourse> list = service.read(file, args -> FixCourse.read(args));
+		fixedCourseRepo.save(list);
 	}
-	public void uploadSameCourse(MultipartFile file) {
+	public void uploadSameCourse(MultipartFile file) throws IOException {
+		ReadService<SameCourse> service = new ReadService<SameCourse>();
+		Collection<SameCourse> list = service.read(file, args -> SameCourse.read(args));
+		sameCourseRepo.save(list);
 	}
 }

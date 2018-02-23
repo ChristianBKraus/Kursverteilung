@@ -177,15 +177,15 @@ public class Model {
 			Student student1 = getStudent(course.getStudent1());
 			Student student2 = getStudent(course.getStudent2());
 			
-			if ( student1.getCourse1() != student2.getCourse1() &&
-				 student1.getCourse1() != student2.getCourse2() &&	
-				 student1.getCourse1() != student2.getCourse3() &&	
-				 student1.getCourse2() != student2.getCourse1() &&	
-				 student1.getCourse2() != student2.getCourse2() &&	
-				 student1.getCourse2() != student2.getCourse3() &&	
-				 student1.getCourse3() != student2.getCourse1() &&	
-				 student1.getCourse3() != student2.getCourse2() &&	
-				 student1.getCourse3() != student2.getCourse3() 	
+			if ( !student1.getCourse1().equals(student2.getCourse1()) &&
+				 !student1.getCourse1().equals(student2.getCourse2()) &&	
+				 !student1.getCourse1().equals(student2.getCourse3()) &&	
+				 !student1.getCourse2().equals(student2.getCourse1()) &&	
+				 !student1.getCourse2().equals(student2.getCourse2()) &&	
+				 !student1.getCourse2().equals(student2.getCourse3()) &&	
+				 !student1.getCourse3().equals(student2.getCourse1()) &&	
+				 !student1.getCourse3().equals(student2.getCourse2()) &&	
+				 !student1.getCourse3().equals(student2.getCourse3()) 	
 				 ) {
 				errors.add("Student " + student1.getName() + " und Student " + student2.getName() +" haben keine gemeinsame Wahl");
 			}

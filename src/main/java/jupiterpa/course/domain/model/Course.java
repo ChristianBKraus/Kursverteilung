@@ -1,5 +1,7 @@
 package jupiterpa.course.domain.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
 
@@ -16,6 +18,9 @@ public class Course {
 		this.id = id;
 		this.name = name;
 		this.capacity = capacity;
+	}
+	public static Course read(List<String> args) {
+		return new Course(Integer.parseInt(args.get(2)), args.get(0), Integer.parseInt(args.get(1)));
 	}
 		
 	@Override

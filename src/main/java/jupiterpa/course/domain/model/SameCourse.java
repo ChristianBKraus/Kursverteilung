@@ -1,5 +1,7 @@
 package jupiterpa.course.domain.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
 
@@ -17,7 +19,10 @@ public class SameCourse {
 		this.student1 = student1;
 		this.student2 = student2;
 	}
-		
+	public static SameCourse read(List<String> args) {
+		return new SameCourse(args.get(0), args.get(1));
+	}
+
 	@Override
 	public String toString() {
 		return "Student " + student1 + " wants to have the same course as student " + student2; 

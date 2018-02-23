@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.swagger.annotations.*;
@@ -72,48 +73,43 @@ public class Controller {
     }
     
     @PostMapping("/upload/students")
-    public String uploadStudent(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) {
+    public ModelAndView uploadStudent(@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws IOException {
 
-        try {
-			upload.uploadStudent(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		upload.uploadStudent(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return new ModelAndView("redirect:/");
     }
     @PostMapping("/upload/courses")
-    public String uploadCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) {
+    public ModelAndView uploadCourse(@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws IOException {
 
         upload.uploadCourse(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return new ModelAndView("redirect:/");
     }
     @PostMapping("/upload/fixcourse")
-    public String uploadFixCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) {
+    public ModelAndView uploadFixCourse(@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws IOException {
 
-        upload.uploadFixCourse(file);
+		upload.uploadFixCourse(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return new ModelAndView("redirect:/");
     }
     @PostMapping("/upload/samecourse")
-    public String uploadSameCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) {
+    public ModelAndView uploadSameCourse(@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws IOException {
 
         upload.uploadSameCourse(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return new ModelAndView("redirect:/");
     }
 }
