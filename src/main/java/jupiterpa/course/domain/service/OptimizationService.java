@@ -26,11 +26,19 @@ public class OptimizationService {
 	CourseRepo courseRepo;
 	FixCourseRepo fixedCourseRepo;
 	SameCourseRepo sameCourseRepo;
+	ActionRepo actionRepo;
 	InterfaceHealth health;
 	
-	public OptimizationService(StudentRepo studentRepo, CourseRepo courseRepo, InterfaceHealth health) {
+	public OptimizationService(StudentRepo studentRepo, CourseRepo courseRepo,
+			                   FixCourseRepo fixedCourseRepo, SameCourseRepo sameCourseRepo,
+			                   ActionRepo actionRepo,
+			                   InterfaceHealth health) {
 		this.studentRepo = studentRepo;
 		this.courseRepo = courseRepo;
+		this.fixedCourseRepo = fixedCourseRepo;
+		this.sameCourseRepo = sameCourseRepo;
+		this.actionRepo = actionRepo;
+		
 		this.health = health;
 	}
 
@@ -56,6 +64,8 @@ public class OptimizationService {
 		courseRepo.save(model.getCourses());
 		fixedCourseRepo.save(model.getFixedCourses());
 		sameCourseRepo.save(model.getSameCourses());
+		
+		actionLog("Optimize");
 	}
 	public static Model optimize(Model model) throws FormatException, MathIllegalStateException  {
 		
@@ -71,6 +81,14 @@ public class OptimizationService {
 	    // Update 
 	    model.update(solution);
 	    return model;
+	}
+	private void actionLog(String id) {
+		Action action = actionRepo.findById(id);
+		if (action == null)
+			action = new Action(id);
+		else 
+			action.update();
+		actionRepo.save(action);
 	}
 	
 	

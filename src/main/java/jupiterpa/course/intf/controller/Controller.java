@@ -29,6 +29,7 @@ public class Controller {
     @Autowired CourseRepo courseRepo;
     @Autowired FixCourseRepo fixedCourseRepo;
     @Autowired SameCourseRepo sameCourseRepo;
+    @Autowired ActionRepo actionRepo;
     
     @Autowired OptimizationService solver;
     @Autowired UploadService upload;
@@ -68,6 +69,17 @@ public class Controller {
     public List<SameCourse> getSameCourses() {  
     	return sameCourseRepo.findAll();
     }
+
+    @GetMapping("/actions")
+    @ApiOperation(value = "GET Action Log", response = Action.class)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved Entity")
+    })
+    public List<Action> getActions() {  
+    	return actionRepo.findAll();
+    }
+    
+    
     @PutMapping("/optimize")
     @ApiOperation(value = "Opimize")
     @ApiResponses(value = {
