@@ -3,11 +3,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+
 import org.apache.commons.math3.optimization.linear.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import jupiterpa.course.domain.service.FormatException;
 
 public class Model {
+    private static final Marker CONTENT = MarkerFactory.getMarker("CONTENT");
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());	
+
 	Collection<String> errors;
 	
 	int nStudent;
@@ -17,10 +26,10 @@ public class Model {
 	LinearObjectiveFunction objectiveFunction;
 	Collection<LinearConstraint> constraints = new ArrayList<LinearConstraint>();
 	
-	final Collection<Student> students;
-	final Collection<Course> courses;
-	final Collection<FixCourse> fixedCourses;
-	final Collection<SameCourse> sameCourses;
+	Collection<Student> students;
+	Collection<Course> courses;
+	Collection<FixCourse> fixedCourses;
+	Collection<SameCourse> sameCourses;
 	final Map<String,Student> studentMap = new HashMap<String,Student>();
 	final Map<String,Course> courseMap = new HashMap<String,Course>();
 	
@@ -269,6 +278,74 @@ public class Model {
 		}
 		return c;
 	}
+	public void update(double[] solution) {
+		updateStudents(solution);
+		updateCourses();
+		updateFixedCourses();
+		updateSameCourses();
+	}
+	private void updateStudents(double[] solution) {
+		int nS = this.getnStudent();
+		int s = 0;
+		for (Student student: students) {
+			int c = 0;
+			for (Course course: courses) {
+				if (solution[s + nS * c] > 0.0) {
+					student.setCourse(course.getName());
+				}
+				c++;
+			}
+			s++;
+		}
+	}
+	private void updateCourses() {
+		Map<String,Integer> booked = new HashMap<String,Integer>();
+		for (Student student : students) {
+			String course = student.getCourse();
+			if (booked.containsKey(course)) {
+				Integer n = booked.get(course);
+				n += 1;
+				booked.put(course, n);
+			}
+		}
+		
+		for (Course course : courses) {
+			course.setBooked(booked.getOrDefault(course.getName(), 0));
+		}
+	}
+	private void updateFixedCourses() {
+		for (FixCourse course : fixedCourses) {
+			course.setBookedCourse(getStudent(course.getStudent()).getCourse());
+		}
+	}
+	private void updateSameCourses() {
+		for (SameCourse course : sameCourses) {
+			course.setKurs1(getStudent(course.getStudent1()).getCourse());
+			course.setKurs2(getStudent(course.getStudent2()).getCourse());
+		}
+	}
+	
+	public void print() {
+		logger.info(CONTENT, "Students:");
+		for (Student student : students) {
+			logger.info(CONTENT,student.toString());
+		}
+
+		logger.info(CONTENT, "Courses:");
+		for (Course course : courses) {
+			logger.info(CONTENT,course.toString());
+		}
+
+		logger.info(CONTENT, "Fixed Courses:");
+		for (FixCourse course : fixedCourses) {
+			logger.info(CONTENT,course.toString());
+		}
+
+		logger.info(CONTENT, "Same Courses:");
+		for (SameCourse course : sameCourses) {
+			logger.info(CONTENT,course.toString());
+		}
+	}
 	
 	public LinearObjectiveFunction getObjectiveFunction() {
 		return objectiveFunction;
@@ -295,5 +372,21 @@ public class Model {
 		return errors;
 	}
 
+	public Collection<Student> getStudents() {
+		return students;
+	}
+
+	public Collection<Course> getCourses() {
+		return courses;
+	}
+
+	public Collection<FixCourse> getFixedCourses() {
+		return fixedCourses;
+	}
+
+	public Collection<SameCourse> getSameCourses() {
+		return sameCourses;
+	}
+	
 	
 }

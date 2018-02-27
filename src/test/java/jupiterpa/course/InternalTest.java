@@ -53,15 +53,17 @@ public class InternalTest {
 		
 		// Ignore save and query from DB
 		
+		// Build Model
+		Model model = new Model(students,courses,fixedCourses,sameCourses);
+		
 		// Solve
-		Collection<Student> result = 
-				OptimizationService.optimize(students, courses, fixedCourses, sameCourses);
+		model = OptimizationService.optimize(model);
 		
 		// Ignore save to DB
 
 	    // Check
-		assertThat( result.size(), is(3) );
-		for (Student student : result ) {
+		assertThat( model.getnStudent(), is(3) );
+		for (Student student : model.getStudents() ) {
 			switch (student.getName()) {
 				case "S1": assertThat( student.getCourse(), is("C1")); break;
 				case "S2": assertThat( student.getCourse(), is("C1")); break;

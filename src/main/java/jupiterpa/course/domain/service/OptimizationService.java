@@ -41,21 +41,23 @@ public class OptimizationService {
 		Collection<FixCourse> fixedCourses = fixedCourseRepo.findAll();
 		Collection<SameCourse> sameCourses = sameCourseRepo.findAll();
 		
-		Collection<Student> opt_students =
-				OptimizationService.optimize(students, courses, fixedCourses, sameCourses);
-		
-		for (Student student : opt_students) {
-			logger.info(CONTENT,student.toString());
-		}
-		
-		studentRepo.save(opt_students);
-	}
-	public static Collection<Student> optimize(Collection<Student> students, 
-			                              Collection<Course> courses,
-			                              Collection<FixCourse> fixedCourses,
-			                              Collection<SameCourse> sameCourses) throws FormatException, MathIllegalStateException  {
 		// Build Model
 		Model model = new Model(students,courses, fixedCourses, sameCourses);		
+		
+		logger.info(CONTENT, "Initial Model:");
+		model.print();
+
+		model = OptimizationService.optimize(model);
+		
+		logger.info(CONTENT, "Resulting Model:");
+		model.print();
+		
+		studentRepo.save(model.getStudents());
+		courseRepo.save(model.getCourses());
+		fixedCourseRepo.save(model.getFixedCourses());
+		sameCourseRepo.save(model.getSameCourses());
+	}
+	public static Model optimize(Model model) throws FormatException, MathIllegalStateException  {
 		
 		// Solve
 	    SimplexSolver solver = new SimplexSolver();
@@ -66,25 +68,10 @@ public class OptimizationService {
 	                GoalType.MAXIMIZE, 
 	                true).getPoint();
 
-	    // Update and Save
-		students = updateStudents(solution, students, courses);
-		return students;
+	    // Update 
+	    model.update(solution);
+	    return model;
 	}
 	
-	private static Collection<Student> updateStudents(double[] solution, Collection<Student> students, Collection<Course> courses) {
-		int nS = students.size();
-		int s = 0;
-		for (Student student: students) {
-			int c = 0;
-			for (Course course: courses) {
-				if (solution[s + nS * c] > 0.0) {
-					student.setCourse(course.getName());
-				}
-				c++;
-			}
-			s++;
-		}
-		return students;
-	}
 	
 }
