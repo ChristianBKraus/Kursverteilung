@@ -14,6 +14,8 @@ public class SameCourse {
 	private String id;
 	private String student1;
 	private String student2;
+	private String kurs1;
+	private String kurs2;
 	
 	public SameCourse() {}
 	public SameCourse(String student1, String student2) {
@@ -24,6 +26,9 @@ public class SameCourse {
 	public static SameCourse read(List<String> args) throws FormatException {
 		if (args.size() < 2) throw new FormatException();
 		return new SameCourse(args.get(0), args.get(1));
+	}
+	public String write() {
+		return student1 + ";" + student2 + ";" + kurs1 + ";" + kurs2;
 	}
 
 	@Override
@@ -48,5 +53,18 @@ public class SameCourse {
 	public void setStudent2(String student2) {
 		this.student2 = student2;
 	}
+	public String getKurs1() {
+		return kurs1;
+	}
+	public void setKurs1(String kurs1) {
+		this.kurs1 = kurs1;
+	}
+	public String getKurs2() {
+		return kurs2;
+	}
+	public void setKurs2(String kurs2) {
+		this.kurs2 = kurs2;
+	}
+	
 	
 }

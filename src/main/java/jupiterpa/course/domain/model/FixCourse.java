@@ -15,6 +15,7 @@ public class FixCourse {
 	@Id
 	private String student;
 	private String course;
+	private String bookedCourse;
 	
 	public FixCourse() {}
 	public FixCourse(String student, String course) {
@@ -24,6 +25,9 @@ public class FixCourse {
 	public static FixCourse read(List<String> args) throws FormatException {
 		if (args.size() < 2) throw new FormatException();
 		return new FixCourse(args.get(0),args.get(1));
+	}
+	public String write() {
+		return student + ";" + course + ";" + bookedCourse;
 	}
 		
 	@Override
@@ -42,5 +46,12 @@ public class FixCourse {
 	public void setCourse(String course) {
 		this.course = course;
 	}
+	public String getBookedCourse() {
+		return bookedCourse;
+	}
+	public void setBookedCourse(String bookedCourse) {
+		this.bookedCourse = bookedCourse;
+	}
+	
 	
 }

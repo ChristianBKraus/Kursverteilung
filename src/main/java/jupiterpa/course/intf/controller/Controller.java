@@ -1,7 +1,10 @@
 package jupiterpa.course.intf.controller;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.math3.exception.MathIllegalStateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,55 +79,92 @@ public class Controller {
     
     @PostMapping("/upload/students")
     public ModelAndView uploadStudent(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException, FormatException {
+            RedirectAttributes redirectAttributes) throws FormatException {
 
 		upload.uploadStudent(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/api/students");
     }
     @PostMapping("/upload/courses")
     public ModelAndView uploadCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException, FormatException {
+            RedirectAttributes redirectAttributes) throws FormatException {
 
         upload.uploadCourse(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/api/courses");
     }
-    @PostMapping("/upload/fixcourse")
+    @PostMapping("/upload/fixcourses")
     public ModelAndView uploadFixCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException, FormatException {
+            RedirectAttributes redirectAttributes) throws FormatException {
 
 		upload.uploadFixCourse(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/api/fixcourses");
     }
-    @PostMapping("/upload/samecourse")
+    @PostMapping("/upload/samecourses")
     public ModelAndView uploadSameCourse(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException, FormatException {
+            RedirectAttributes redirectAttributes) throws FormatException {
 
         upload.uploadSameCourse(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/api/samecourses");
+    }
+
+    @GetMapping("/download/students")
+    public void downloadStudents(HttpServletResponse response) throws FormatException {
+    	try {
+    	response.setContentType("text/csv");
+    	response.setHeader("Content-Disposition", "attachment; filename=\"student_result.csv\"");
+    	upload.downloadStudents(response.getOutputStream());
+    	} catch (IOException ex) {
+    		throw new FormatException("Allgemeiner Ein-Ausgabe Fehler");
+    	}
+    }
+    @GetMapping("/download/courses")
+    public void downloadCourses(HttpServletResponse response) throws FormatException {
+    	try {
+    	response.setContentType("text/csv");
+    	response.setHeader("Content-Disposition", "attachment; filename=\"course_result.csv\"");
+    	upload.downloadCourses(response.getOutputStream());
+    	} catch (IOException ex) {
+    		throw new FormatException("Allgemeiner Ein-Ausgabe Fehler");
+    	}
+    }
+    @GetMapping("/download/fixcourses")
+    public void downloadFixCourses(HttpServletResponse response) throws FormatException {
+    	try {
+    	response.setContentType("text/csv");
+    	response.setHeader("Content-Disposition", "attachment; filename=\"fixcourse_result.csv\"");
+    	upload.downloadFixCourses(response.getOutputStream());
+    	} catch (IOException ex) {
+    		throw new FormatException("Allgemeiner Ein-Ausgabe Fehler");
+    	}
+    }
+    @GetMapping("/download/samecourses")
+    public void downloadSameCourses(HttpServletResponse response) throws FormatException {
+    	try {
+    	response.setContentType("text/csv");
+    	response.setHeader("Content-Disposition", "attachment; filename=\"samecourse_result.csv\"");
+    	upload.downloadSameCourses(response.getOutputStream());
+    	} catch (IOException ex) {
+    		throw new FormatException("Allgemeiner Ein-Ausgabe Fehler");
+    	}
     }
     
     
     @ResponseStatus(value=HttpStatus.CONFLICT, reason="Formatierungsfehler")
     @ExceptionHandler(FormatException.class) 
-    public void handleFormatException(){
-    	// Errors !!!!!!
+    public Collection<String> handleFormatException(FormatException ex){
+    	return ex.getErrors();
     }
-
-    @ResponseStatus(value=HttpStatus.CONFLICT, reason="Formatierungsfehler")
-    @ExceptionHandler(IOException.class) 
-    public void handleIOException(){}
 
     @ResponseStatus(value=HttpStatus.CONFLICT, reason="Problem nicht lösbar")
     @ExceptionHandler(MathIllegalStateException.class) 

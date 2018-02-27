@@ -30,6 +30,9 @@ public class Student {
 		if (args.size() < 5) throw new FormatException();
 		return new Student(Integer.parseInt(args.get(4)), args.get(0), args.get(1), args.get(2), args.get(3));
 	}
+	public String write() {
+		return name + ";" + course + ";" + course1 + ";" + course2 + ";" + course3 ;
+	}
 		
 	@Override
 	public String toString() {

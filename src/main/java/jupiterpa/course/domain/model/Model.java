@@ -123,6 +123,16 @@ public class Model {
 	}
 	private Collection<String> check() {
 		Collection<String> errors = new ArrayList<String>();
+		
+		// There must be students
+		if (students.size() == 0) {
+			errors.add("Keine Studenten");
+		}
+		
+		// There must be courses
+		if (courses.size() == 0) {
+			errors.add("Keine Kurse");
+		}
 				
 		// No duplicate Course Names
 		if (studentMap.size() != students.size()) {

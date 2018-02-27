@@ -15,6 +15,7 @@ public class Course {
 	private int id;
 	private String name;
 	private int capacity;
+	private int booked;
 	
 	public Course() {}
 	public Course(int id, String name, int capacity) {
@@ -25,6 +26,9 @@ public class Course {
 	public static Course read(List<String> args) throws FormatException {
 		if (args.size() < 3) throw new FormatException();
 		return new Course(Integer.parseInt(args.get(2)), args.get(0), Integer.parseInt(args.get(1)));
+	}
+	public String write() {
+		return name + ";" + String.valueOf(capacity) + ";" + String.valueOf(booked);
 	}
 		
 	@Override
@@ -48,6 +52,12 @@ public class Course {
 	}
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+	public int getBooked() {
+		return booked;
+	}
+	public void setBooked(int booked) {
+		this.booked = booked;
 	}
 		
 }
