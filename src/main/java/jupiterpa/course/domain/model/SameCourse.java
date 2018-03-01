@@ -24,7 +24,10 @@ public class SameCourse {
 		this.student2 = student2;
 	}
 	public static SameCourse read(List<String> args) throws FormatException {
-		if (args.size() < 2) throw new FormatException();
+		if (args.size() < 2) { 
+			int index = Integer.parseInt(args.get(args.size()-1)) + 2;
+			throw new FormatException("Formatierungsfehler in Zeile " + String.valueOf(index) + " (nur " + args.size() + " Werte)");
+		}
 		return new SameCourse(args.get(0), args.get(1));
 	}
 	public String write() {

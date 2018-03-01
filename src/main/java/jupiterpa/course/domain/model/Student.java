@@ -30,7 +30,10 @@ public class Student {
 		this.course3 = course3;
 	}
 	public static Student read(List<String> args) throws FormatException {
-		if (args.size() < 5) throw new FormatException();
+		if (args.size() < 5) {
+			int index = Integer.parseInt(args.get(args.size()-1)) + 2;
+			throw new FormatException("Formatierungsfehler in Zeile " + String.valueOf(index) + " (nur " + args.size() + " Werte)");
+		}
 		return new Student(Integer.parseInt(args.get(4)), args.get(0), args.get(1), args.get(2), args.get(3));
 	}
 	public String write() {

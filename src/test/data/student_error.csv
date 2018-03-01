@@ -1,4 +1,4 @@
-Student	Kurs1	Kurs2	Kurs3
-S1	C1	C2	C3
-S2	C2	C1	C3
-S3	C2	C1	
+Student;Kurs1;Kurs2;Kurs3
+S1;C1;C2;C3
+S2;C2;C1;C3
+S3;C2;C1	

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.math3.exception.MathIllegalStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -173,10 +174,10 @@ public class Controller {
     }
     
     
-    @ResponseStatus(value=HttpStatus.CONFLICT, reason="Formatierungsfehler")
+//    @ResponseStatus(value=HttpStatus.CONFLICT, reason="Formatierungsfehler")
     @ExceptionHandler(FormatException.class) 
-    public Collection<String> handleFormatException(FormatException ex){
-    	return ex.getErrors();
+    public ResponseEntity<Object> handleFormatException(FormatException ex){
+    	return new ResponseEntity<>(ex,HttpStatus.CONFLICT);
     }
 
     @ResponseStatus(value=HttpStatus.CONFLICT, reason="Problem nicht lösbar")

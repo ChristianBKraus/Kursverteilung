@@ -27,7 +27,10 @@ public class Course {
 		this.capacity = capacity;
 	}
 	public static Course read(List<String> args) throws FormatException {
-		if (args.size() < 3) throw new FormatException();
+		if (args.size() < 3) {
+			int index = Integer.parseInt(args.get(args.size()-1)) + 2;
+			throw new FormatException("Formatierungsfehler in Zeile " + String.valueOf(index) + " (nur " + args.size() + " Werte)");
+		}
 		return new Course(Integer.parseInt(args.get(2)), args.get(0), Integer.parseInt(args.get(1)));
 	}
 	public String write() {

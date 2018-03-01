@@ -29,6 +29,7 @@ public class ReadUtility<T> {
 		int i = 0;
 		while ((nextRecord = csvReader.readNext()) != null) {
 			List<String> args = new ArrayList<>(Arrays.asList(nextRecord));
+			logger.info(CONTENT,"Line {} with content {}",i,args);
 			args.add(Integer.toString(i));
 			T entry = create.apply(args);
 			logger.info(CONTENT,entry.toString());
