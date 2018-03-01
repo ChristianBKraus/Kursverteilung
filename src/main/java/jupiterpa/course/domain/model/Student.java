@@ -2,6 +2,7 @@ package jupiterpa.course.domain.model;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
 
@@ -11,6 +12,7 @@ import jupiterpa.course.domain.service.FormatException;
 public class Student {
 	
 	@Id
+	private String _id;
 	private int id;
 	private String name;
 	private String course;
@@ -20,6 +22,7 @@ public class Student {
 	
 	public Student() {}
 	public Student(int id, String name, String course1, String course2, String course3) {
+		this._id = String.valueOf(id);
 		this.id = id;
 		this.name = name;
 		this.course1 = course1;
@@ -42,6 +45,7 @@ public class Student {
 		return id;
 	}
 	public void setId(int id) {
+		this._id = String.valueOf(id);
 		this.id = id;
 	}
 	public String getName() {

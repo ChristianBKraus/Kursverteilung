@@ -2,6 +2,7 @@ package jupiterpa.course.intf.controller;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,22 +35,22 @@ public class Controller {
     @Autowired OptimizationService solver;
     @Autowired UploadService upload;
     
-    @GetMapping("/course")
+    @GetMapping("/courses")
     @ApiOperation(value = "GET courses", response = Course.class)
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved Entity")
     })
     public List<Course> getCourses() {  
-    	return courseRepo.findAll();
+    	return courseRepo.findAllByOrderByNameAsc();
     }
     
-    @GetMapping("/student")
+    @GetMapping("/students")
     @ApiOperation(value = "GET students", response = Student.class)
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved Entity")
     })
     public List<Student> getStudents() {  
-    	return studentRepo.findAll();
+    	return studentRepo.findAllByOrderByNameAsc();
     }
     
     @GetMapping("/fixedCourses")
@@ -58,7 +59,7 @@ public class Controller {
         @ApiResponse(code = 200, message = "Successfully retrieved Entity")
     })
     public List<FixCourse> getfixedCourses() {  
-    	return fixedCourseRepo.findAll();
+    	return fixedCourseRepo.findAllByOrderByStudentAsc();
     }
 
     @GetMapping("/sameCourses")
@@ -67,7 +68,7 @@ public class Controller {
         @ApiResponse(code = 200, message = "Successfully retrieved Entity")
     })
     public List<SameCourse> getSameCourses() {  
-    	return sameCourseRepo.findAll();
+    	return sameCourseRepo.findAllByOrderByStudent1AscStudent2Asc();
     }
 
     @GetMapping("/actions")
@@ -109,7 +110,7 @@ public class Controller {
 
         return new ModelAndView("redirect:/api/courses");
     }
-    @PostMapping("/upload/fixcourses")
+    @PostMapping("/upload/fixedCourses")
     public ModelAndView uploadFixCourse(@RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) throws FormatException {
 
@@ -117,9 +118,9 @@ public class Controller {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return new ModelAndView("redirect:/api/fixcourses");
+        return new ModelAndView("redirect:/api/fixedCourses");
     }
-    @PostMapping("/upload/samecourses")
+    @PostMapping("/upload/sameCourses")
     public ModelAndView uploadSameCourse(@RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) throws FormatException {
 
@@ -127,7 +128,7 @@ public class Controller {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return new ModelAndView("redirect:/api/samecourses");
+        return new ModelAndView("redirect:/api/sameCourses");
     }
 
     @GetMapping("/download/students")
@@ -150,7 +151,7 @@ public class Controller {
     		throw new FormatException("Allgemeiner Ein-Ausgabe Fehler");
     	}
     }
-    @GetMapping("/download/fixcourses")
+    @GetMapping("/download/fixedCourses")
     public void downloadFixCourses(HttpServletResponse response) throws FormatException {
     	try {
     	response.setContentType("text/csv");
@@ -160,7 +161,7 @@ public class Controller {
     		throw new FormatException("Allgemeiner Ein-Ausgabe Fehler");
     	}
     }
-    @GetMapping("/download/samecourses")
+    @GetMapping("/download/sameCourses")
     public void downloadSameCourses(HttpServletResponse response) throws FormatException {
     	try {
     	response.setContentType("text/csv");

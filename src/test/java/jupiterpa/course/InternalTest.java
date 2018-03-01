@@ -16,12 +16,13 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 public class InternalTest { 
 	final String workspace = "src/test/data/";
-	
+
 	private MultipartFile getMultipartFile(String filename) throws IOException {
 		Path path = Paths.get(workspace+filename);
 		byte[] file = null;
@@ -61,7 +62,7 @@ public class InternalTest {
 		
 		// Ignore save to DB
 
-	    // Check
+	    // Check Student
 		assertThat( model.getnStudent(), is(3) );
 		for (Student student : model.getStudents() ) {
 			switch (student.getName()) {
@@ -70,7 +71,29 @@ public class InternalTest {
 				case "S3": assertThat( student.getCourse(), is("C3")); break;
 			}
 		}
-
+		
+		// Check Course
+		assertThat( model.getnCourse(), is (3));
+		for (Course course : model.getCourses()) {
+			switch(course.getName()) {
+			case "C1": assertThat( course.getBooked(), is(2) ); break;
+			case "C2": assertThat( course.getBooked(), is(0) ); break;
+			case "C3": assertThat( course.getBooked(), is(1) ); break;
+			}
+		}
+		
+		// Check FixCourse 
+		assertThat( model.getFixedCourses().size(), is(1));
+		for (FixCourse course : model.getFixedCourses()) {
+			assertThat( course.getBookedCourse(), equalTo( course.getCourse() ) );
+		}
+		
+		// CheckSameCourse
+		assertThat( model.getSameCourses().size(), is(1));
+		for (SameCourse course : model.getSameCourses()) {
+			assertThat( course.getKurs1(), equalTo( course.getKurs2()));
+		}
 	}
+	
 }
 

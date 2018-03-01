@@ -1,6 +1,7 @@
 package jupiterpa.course.domain.model;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -12,6 +13,7 @@ import jupiterpa.course.domain.service.FormatException;
 public class Course {
 	
 	@Id
+	private BigInteger _id;
 	private int id;
 	private String name;
 	private int capacity;
@@ -19,6 +21,7 @@ public class Course {
 	
 	public Course() {}
 	public Course(int id, String name, int capacity) {
+		this._id = BigInteger.valueOf(id);
 		this.id = id;
 		this.name = name;
 		this.capacity = capacity;
@@ -39,6 +42,7 @@ public class Course {
 		return id;
 	}
 	public void setId(int id) {
+		this._id = BigInteger.valueOf(id);
 		this.id = id;
 	}
 	public String getName() {

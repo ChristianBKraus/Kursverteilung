@@ -306,6 +306,8 @@ public class Model {
 				Integer n = booked.get(course);
 				n += 1;
 				booked.put(course, n);
+			} else {
+				booked.put(course, 1);
 			}
 		}
 		
