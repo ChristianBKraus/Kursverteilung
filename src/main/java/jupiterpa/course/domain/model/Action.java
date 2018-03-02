@@ -1,6 +1,7 @@
 package jupiterpa.course.domain.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
@@ -14,13 +15,13 @@ public class Action {
 	@Id
 	private String id;
 	private String user;
-	private Timestamp timestamp;
+	private Date timestamp;
 	
 	public Action() {}
 	public Action(String id) {
 		this.id = id;
 		this.user = getCurrentUser();
-		this.timestamp = new Timestamp(System.currentTimeMillis());
+		this.timestamp = new Date(System.currentTimeMillis());
 	}
 	
 	private String getCurrentUser() {
@@ -54,10 +55,10 @@ public class Action {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public Timestamp getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(Timestamp timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 	public String getUser() {

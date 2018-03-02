@@ -14,6 +14,7 @@ import org.junit.runner.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -174,6 +175,27 @@ public class IntegrationTest {
 	           .andExpect(jsonPath("$[1].course").value("C1"))
 	           .andExpect(jsonPath("$[2].course").value("C3"))
 	           ;
+    	mockMvc.perform( get("/api/students") )
+        	   .andExpect(status().isOk())
+        	   .andExpect(jsonPath("$.length()").value(3))
+        	   ;
+    	mockMvc.perform( get("/api/courses") )
+ 	   	       .andExpect(status().isOk())
+ 	           .andExpect(jsonPath("$.length()").value(3))
+ 	           ;
+    	mockMvc.perform( get("/api/fixedCourses") )
+               .andExpect(status().isOk())
+ 	           .andExpect(jsonPath("$.length()").value(1))
+ 	           ;
+    	mockMvc.perform( get("/api/sameCourses") )
+ 	           .andExpect(status().isOk())
+ 	           .andExpect(jsonPath("$.length()").value(1))
+ 	           ;
+    	mockMvc.perform( get("/api/actions") )
+ 	           .andExpect(status().isOk())
+ 	           .andExpect(jsonPath("$.length()").value(5))
+ 	           ;
+
     	
     	mockMvc.perform( get("/api/download/students") )
     	   .andExpect( status().isOk() )
@@ -187,6 +209,20 @@ public class IntegrationTest {
     	mockMvc.perform( get("/api/download/sameCourses") )
 	       .andExpect( status().isOk() )
 	       .andExpect( content().contentType("text/csv"));                                      
+    }
+    
+    @Test
+    public void formatError() throws Exception {
+		MockMultipartFile file_mock = getMultipartFile("student_error.csv");
+		
+		String base = "/api/upload/";
+        mockMvc.perform(
+        	MockMvcRequestBuilders.fileUpload(base+"students")
+                                  .file(file_mock)
+                                  .param("filename", "student_error.csv"))
+                                  .andExpect(status().is(409) )
+                                  .andExpect(jsonPath("$.errors[0]").value("Formatierungsfehler in Zeile 4 (nur 4 Werte)")
+                        );
     }
     
     private String toJson(Object object) throws JsonProcessingException {
