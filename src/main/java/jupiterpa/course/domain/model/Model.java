@@ -1,15 +1,8 @@
 package jupiterpa.course.domain.model;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
+import java.util.*;
 import org.apache.commons.math3.optimization.linear.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.slf4j.*;
 
 import jupiterpa.course.domain.service.FormatException;
 

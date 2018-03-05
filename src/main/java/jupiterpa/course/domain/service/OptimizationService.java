@@ -1,17 +1,10 @@
 package jupiterpa.course.domain.service;
 
-import java.util.Collection;
-import java.util.List;
-
+import java.util.*;
 import org.apache.commons.math3.exception.MathIllegalStateException;
-import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.optimization.GoalType;
-import org.apache.commons.math3.optimization.PointValuePair;
 import org.apache.commons.math3.optimization.linear.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.slf4j.*;
 import org.springframework.stereotype.Service;
 
 import jupiterpa.course.domain.model.*;

@@ -1,7 +1,5 @@
 package jupiterpa.course.domain.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;

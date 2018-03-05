@@ -1,8 +1,7 @@
 package jupiterpa.course.domain.service;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Collection;
+import java.io.*;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
