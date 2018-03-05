@@ -47,33 +47,17 @@ public class Student {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this._id = String.valueOf(id);
-		this.id = id;
-	}
 	public String getName() {
 		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getCourse1() {
 		return course1;
 	}
-	public void setCourse1(String course1) {
-		this.course1 = course1;
-	}
 	public String getCourse2() {
 		return course2;
 	}
-	public void setCourse2(String course2) {
-		this.course2 = course2;
-	}
 	public String getCourse3() {
 		return course3;
-	}
-	public void setCourse3(String course3) {
-		this.course3 = course3;
 	}
 	public String getCourse() {
 		return course;

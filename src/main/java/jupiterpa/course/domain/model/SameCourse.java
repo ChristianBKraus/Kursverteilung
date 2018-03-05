@@ -14,8 +14,8 @@ public class SameCourse {
 	private String id;
 	private String student1;
 	private String student2;
-	private String kurs1;
-	private String kurs2;
+	private String course1;
+	private String course2;
 	
 	public SameCourse() {}
 	public SameCourse(String student1, String student2) {
@@ -24,14 +24,14 @@ public class SameCourse {
 		this.student2 = student2;
 	}
 	public static SameCourse read(List<String> args) throws FormatException {
-		if (args.size() < 2) { 
+		if (args.size() < 3) { 
 			int index = Integer.parseInt(args.get(args.size()-1)) + 2;
 			throw new FormatException("Formatierungsfehler in Zeile " + String.valueOf(index) + " (nur " + args.size() + " Werte)");
 		}
 		return new SameCourse(args.get(0), args.get(1));
 	}
 	public String write() {
-		return student1 + ";" + student2 + ";" + kurs1 + ";" + kurs2;
+		return student1 + ";" + student2 + ";" + course1 + ";" + course2;
 	}
 
 	@Override
@@ -41,32 +41,23 @@ public class SameCourse {
 	public String getId() {
 		return id;
 	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getStudent1() {
 		return student1;
-	}
-	public void setStudent1(String student1) {
-		this.student1 = student1;
 	}
 	public String getStudent2() {
 		return student2;
 	}
-	public void setStudent2(String student2) {
-		this.student2 = student2;
+	public String getCourse1() {
+		return course1;
 	}
-	public String getKurs1() {
-		return kurs1;
+	public void setCourse1(String course1) {
+		this.course1 = course1;
 	}
-	public void setKurs1(String kurs1) {
-		this.kurs1 = kurs1;
+	public String getCourse2() {
+		return course2;
 	}
-	public String getKurs2() {
-		return kurs2;
-	}
-	public void setKurs2(String kurs2) {
-		this.kurs2 = kurs2;
+	public void setCourse2(String course2) {
+		this.course2 = course2;
 	}
 	
 	

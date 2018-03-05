@@ -41,7 +41,7 @@ public class Action {
 	
 	public void update() {
 		this.user = getCurrentUser();
-		this.timestamp = new Timestamp(System.currentTimeMillis());
+		this.timestamp = new Date(System.currentTimeMillis());
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -52,20 +52,11 @@ public class Action {
 	public String getId() {
 		return id;
 	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public Date getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
 	public String getUser() {
 		return user;
-	}
-	public void setUser(String user) {
-		this.user = user;
 	}
 		
 }

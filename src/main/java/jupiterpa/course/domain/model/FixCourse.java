@@ -23,7 +23,7 @@ public class FixCourse {
 		this.course = course;
 	}
 	public static FixCourse read(List<String> args) throws FormatException {
-		if (args.size() < 2) {
+		if (args.size() < 3) {
 			int index = Integer.parseInt(args.get(args.size()-1)) + 2;
 			throw new FormatException("Formatierungsfehler in Zeile " + String.valueOf(index) + " (nur " + args.size() + " Werte)");
 		}
@@ -40,14 +40,8 @@ public class FixCourse {
 	public String getStudent() {
 		return student;
 	}
-	public void setStudent(String student) {
-		this.student = student;
-	}
 	public String getCourse() {
 		return course;
-	}
-	public void setCourse(String course) {
-		this.course = course;
 	}
 	public String getBookedCourse() {
 		return bookedCourse;

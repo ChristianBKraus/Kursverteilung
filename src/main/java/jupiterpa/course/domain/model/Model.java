@@ -91,24 +91,6 @@ public class Model {
 		
 		return result;
 	}
-	public Map<Student,Course> convert(double[] solution) { 
-		Map<Student,Course>  result = new HashMap<Student,Course>();
-		
-		int c = 0;
-		int s = 0;
-		for (Course course : courses) {
-			s = 0;
-			for (Student student: students) {
-				if ( solution[s + c * nStudent] == 1.0) {
-					result.put(student,course);
-				}	
-			    s++;
-			}
-			c++;
-		}
-		
-		return result;
-	}
 	public Student getStudent(String name) {
 		return studentMap.getOrDefault(name, null);
 	}
@@ -322,8 +304,8 @@ public class Model {
 	}
 	private void updateSameCourses() {
 		for (SameCourse course : sameCourses) {
-			course.setKurs1(getStudent(course.getStudent1()).getCourse());
-			course.setKurs2(getStudent(course.getStudent2()).getCourse());
+			course.setCourse1(getStudent(course.getStudent1()).getCourse());
+			course.setCourse2(getStudent(course.getStudent2()).getCourse());
 		}
 	}
 	
@@ -370,10 +352,6 @@ public class Model {
 	public int getnConstraint() {
 		return nConstraint;
 	}
-	public Collection<String> getErrors() {
-		return errors;
-	}
-
 	public Collection<Student> getStudents() {
 		return students;
 	}

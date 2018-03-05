@@ -40,12 +40,12 @@ public class ReadUtility<T> {
 		return list;
 	}
 	
-	private CSVReader init(MultipartFile file) throws IOException {
+	private CSVReader init(MultipartFile file) throws FormatException, IOException {
 		InputStream stream = file.getInputStream();
 		Reader reader = new InputStreamReader(stream);
 		CSVReader csvReader = new CSVReader(reader, ';');
 		if (csvReader.readNext() == null) { // Header line
-			throw new IOException();
+			throw new FormatException("Leere Datei");
 		}
 		return csvReader;
 	}

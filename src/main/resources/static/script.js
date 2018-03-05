@@ -1,39 +1,92 @@
-var app = angular.module('Cockpit', []);
+var app = angular.module('Kursverteilung', []);
 
 app.controller('Ctrl', function($scope, $http) {
-			 $scope.header = { id: 1, year: "2016", period: "009", status: "New" };
-			 $scope.activities = [];
-		   
-		     $http.get('closing/' + $scope.header.id.toString() )
+			 $scope.actions = [];
+			 $scope.students = [];
+			 $scope.courses = [];
+			 $scope.sameCourses = [];
+			 $scope.fixedCourses = [];
+			 
+			 $scope.readActions = function() {
+		     $http.get('api/actions' )
 				  .then(  function(response) {
-					console.log("Closing read" + $scope.header.id.toString());
-					console.log("response: " + response);
-				    $scope.header = response.data;
-				    console.log("closing = " + $scope.header);
-					$scope.getactivities();
+					console.log("Reading Actions");
+				    $scope.actions = response.data;
+					console.log("response: ");
+					$scope.actions.forEach(function(el){
+						console.log(el);
+					});
 				  });
-		     		   
-		     $scope.getactivities = function() {
-				var g_activities = 'closing/' + $scope.header.id.toString() + '/activity';
-				console.log( "GET " + g_activities );
-				$http.get( g_activities )
-					 .then( function(response) {
-          			   console.log("Activities read");
-          			   $scope.activities = response.data; 
-          			   console.log("activities = " + $scope.activities);
-          			  });
-		     };	
-		     
- 			 $scope.action = function(event, id) {
- 				 var activity = $(event.currentTarget).attr("data-id");
- 				 console.log("action (" + activity + "/" + id + ")");
-				 var request = 'closing/' + 
-				               $scope.header.id.toString() + "/" + 
-				               'activity' + "/" + activity;
-				 console.log("POST " + request);
-				 $http.post(request)
-				      .then( function(activity) { console.log("POST COMPLETE" ); }, 
-					     	 function(error) { console.log(error); }
-				            );	
- 			 };
+			 }
+			 $scope.readStudents = function() {
+		     $http.get('api/students' )
+			  .then(  function(response) {
+				console.log("Reading Students");
+			    $scope.students = response.data;
+				console.log("response: ");
+				$scope.students.forEach(function(el){
+					console.log(el);
+				});
+			  });
+			 };
+	     		
+			 $scope.readCourses = function() {
+		     $http.get('api/courses' )
+			  .then(  function(response) {
+				console.log("Reading Courses");
+			    $scope.courses = response.data;
+				console.log("response: ");
+				$scope.courses.forEach(function(el){
+					console.log(el);
+				});
+			  });
+			 };
+	     		
+			 $scope.readFixedCourses = function() {
+		     $http.get('api/fixedCourses' )
+			  .then(  function(response) {
+				console.log("Reading FixedCourses");
+			    $scope.fixedCourses = response.data;
+				console.log("response: ");
+				$scope.fixedCourses.forEach(function(el){
+					console.log(el);
+				});
+			  });
+			 };
+	     		
+			 $scope.readSameCourses = function() {
+		     $http.get('api/sameCourses' )
+			  .then(  function(response) {
+				console.log("Reading sameCourses");
+			    $scope.sameCourses = response.data;
+				console.log("response: ");
+				$scope.sameCourses.forEach(function(el){
+					console.log(el);
+				});
+			  });
+			 };
+			 $scope.read = function() {
+				 $scope.readActions();
+				 $scope.readStudents();
+				 $scope.readCourses();
+				 $scope.readFixedCourses();
+				 $scope.readSameCourses();
+			 }
+	     		   
+		     $scope.read();
+
+		     $scope.optimize = function() {
+		    	 console.log("optimize");
+		    	 $http.put('api/optimize')
+		    	   .then( function success(response) {
+		    		  console.log("optimized");
+		    		   $scope.read();
+		    		   }, function error(response) {
+		    	      console.log("error");
+		    	      response.data.errors.forEach(function(e) {
+		    	    	  console.log(e);
+		    	      })
+
+		    	   });
+		     }
 });		

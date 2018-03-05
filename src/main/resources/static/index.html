@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="Kusrverteilung">
+<html lang="en" ng-app="Kursverteilung">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kursverteilung</title>
 
@@ -15,18 +14,171 @@
 </head>
 <body>
 	<div id="wrapper" ng-controller="Ctrl">
-	
-		<h1>Kursverteilung</h1>
-		
-		<div>
-			<form method="POST" enctype="multipart/form-data" action="/api/upload/students">
-				<table>
-					<tr> <td> File to upload: </td> <td> <input type="file" name="file"/> </td> </tr>
-					<tr> <td> </td> <td> <input type="submit" value="Upload" /> </td> </tr>
-				</table>
-			</form>
-		</div>
 
+		<h1>Kursverteilung</h1>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-6">
+					<h2>Hochladen der Daten</h2>
+					<table>
+						<tr>
+							<td>Kurse</td>
+							<td>
+								<form method="POST" enctype="multipart/form-data"
+									action="/api/upload/courses">
+									<table>
+										<tr>
+											<td><input type="file" name="file" /></td>
+											<td><input type="submit" value="Hochladen" /></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+							<td><span class="glyphicon glyphicon-ok"> 04.03.2018
+									11:28 </span></td>
+						</tr>
+						<tr>
+							<td>Schüler</td>
+							<td>
+								<form method="POST" enctype="multipart/form-data"
+									action="/api/upload/students">
+									<table>
+										<tr>
+											<td><input type="file" name="file" /></td>
+											<td><input type="submit" value="Hochladen" /></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+						</tr>
+						<tr>
+							<td>Gleiche Kurse</td>
+							<td>
+								<form method="POST" enctype="multipart/form-data"
+									action="/api/upload/sameCourses">
+									<table>
+										<tr>
+											<td><input type="file" name="file" /></td>
+											<td><input type="submit" value="Hochladen" /></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+						</tr>
+						<tr>
+							<td>Fester Kurs</td>
+							<td>
+								<form method="POST" enctype="multipart/form-data"
+									action="/api/upload/fixedCourses">
+									<table>
+										<tr>
+											<td><input type="file" name="file" /></td>
+											<td><input type="submit" value="Hochladen" /></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+						</tr>
+					</table>
+
+				</div>
+				<div class="col-sm-6">
+					<h2>Optimieren</h2>
+					<button type="button" class="btn btn-primary btn-lg btn-block"
+						ng-click="optimize()">Optimieren</button>
+					
+					<ul ng-repeat="error in errors">
+						<li> {{error}} </li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Ergebnis</h2>
+					
+					<h3>Schüler</h3>
+					<table class="table table-striped">
+						<thead class="thead-dark">
+						<tr>
+							<th scope="col"> Schüler </th>
+							<th scope="col"> Kurs </th>
+							<th scope="col"> Wahl 1 </th>
+							<th scope="col"> Wahl 2 </th>
+							<th scope="col"> Wahl 3 </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="student in students">
+							<td>{{ student.name }} </td>
+							<td>{{ student.course }} </td>
+							<td>{{ student.course1 }} </td>
+							<td>{{ student.course2 }} </td>
+							<td>{{ student.course3 }} </td>
+						</tr>
+						</tbody>					
+					</table>
+					
+					<h3>Kurse</h3>
+					<table class="table table-striped">
+						<thead class="thead-dark">
+						<tr>
+							<th scope="col"> Kurs </th>
+							<th scope="col"> Kapazität </th>
+							<th scope="col"> gebucht </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="course in courses">
+							<td>{{ course.name }} </td>
+							<td>{{ course.capacity }} </td>
+							<td>{{ course.booked }} </td>
+						</tr>
+						</tbody>					
+					</table>
+					
+					<h3>Gleiche Kurse</h3>
+					<table class="table table-striped">
+						<thead class="thead-dark">
+						<tr>
+							<th scope="col"> Student 1 </th>
+							<th scope="col"> Student 2 </th>
+							<th scope="col"> Gebuchter Kurs 1 </th>
+							<th scope="col"> Gebuchter Kurs 2 </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="same in sameCourses">
+							<td>{{ same.student1 }} </td>
+							<td>{{ same.student2 }} </td>
+							<td>{{ same.course1 }} </td>
+							<td>{{ same.course2 }} </td>
+						</tr>
+						</tbody>					
+					</table>
+					
+					<h3>Feste Kurse</h3>
+					<table class="table table-striped">
+						<thead class="thead-dark">
+						<tr>
+							<th scope="col"> Student </th>
+							<th scope="col"> Kurs  </th>
+							<th scope="col"> Gebuchter Kurs </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="fixed in fixedCourses">
+							<td>{{ fixed.student }} </td>
+							<td>{{ fixed.course }} </td>
+							<td>{{ fixed.bookedCourse }} </td>
+						</tr>
+						</tbody>					
+					</table>
+					
+				</div>
+
+			</div>
+		</div>
 
 	</div>
 </body>

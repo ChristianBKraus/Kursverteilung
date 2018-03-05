@@ -158,6 +158,7 @@ public class IntegrationTest {
     @Test 
     public void uploadAndOptimize() throws Exception {
     	upload("student.csv","students");
+    	upload("student.csv","students");
     	upload("course.csv","courses");
     	upload("fixCourse.csv","fixedCourses");
     	upload("sameCourse.csv","sameCourses");
